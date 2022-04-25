@@ -2,6 +2,15 @@ data "aws_eks_cluster" "cluster" {
   name = "test-eks-cluster"
 }
 
+# aws-load-balancer-controller 라는 k8s 서비스 계정에 대한 IAM 역할 연결
+resource "null_resource" "helm-eks-repo" {
+  provisioner "local-exec" {
+    command = "helm repo add eks https://aws.github.io/eks-charts;helm repo update;"
+    interpreter = ["/bin/sh", "-c"]
+  }
+}
+
+
 provider "helm" {
   kubernetes {
     config_path = "~/.kube/config"
@@ -16,6 +25,10 @@ provider "helm" {
 }
 
 resource "helm_release" "aws-load-balancer-controller" {
+  depends_on = [
+    null_resource.helm-eks-repo
+  ]
+
   // repository = "https://aws.github.io/eks-charts"
   name      = "aws-load-balancer-controller"
   chart     = "eks/aws-load-balancer-controller"

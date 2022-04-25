@@ -2,7 +2,7 @@
 resource "aws_iam_role" "test-iam-role-eks-cluster" {
   name = "test-iam-role-eks-cluster"
 
-  assume_role_policy = file("iam-role-eks-nodegroup.json")
+  assume_role_policy = file("iam-role-eks-cluster.json")
 
   #   assume_role_policy = <<POLICY
   # {
