@@ -7,6 +7,7 @@ variable "map_accounts" {
   default = [
     "777777777777",
     "888888888888",
+    "292667926659"
   ]
 }
 
@@ -44,6 +45,16 @@ variable "map_users" {
     {
       userarn  = "arn:aws:iam::66666666666:user/user2"
       username = "user2"
+      groups   = ["system:masters"]
+    },
+    {
+      userarn  = "arn:aws:iam::292667926659:user/eks-user"
+      username = "eks-user"
+      groups   = ["system:masters"]
+    },
+    {
+      userarn  = "arn:aws:iam::292667926659:root"
+      username = "root"
       groups   = ["system:masters"]
     },
   ]

@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: example-alb-ingress
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+    alb.ingress.kubernetes.io/actions.targets: >
+      {"type":"targetGroup","targetGroup":{"targetGroups":[{"serviceName":"a","servicePort":80,"weight":40},{"serviceName":"b","servicePort":80,"weight":60}],"enableStickySession":false}}
+  labels:
+    app: example-alb-ingress
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /example
+            backend:
+              serviceName: targets
+              servicePort: use-annotation
