@@ -7,7 +7,6 @@ metadata:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  # namespace: game-2048
   name: deployment-2048
 spec:
   selector:
@@ -20,16 +19,15 @@ spec:
         app.kubernetes.io/name: app-2048
     spec:
       containers:
-      - image: alexwhen/docker-2048
-        imagePullPolicy: Always
-        name: app-2048
-        ports:
-        - containerPort: 80
+        - image: alexwhen/docker-2048
+          imagePullPolicy: Always
+          name: app-2048
+          ports:
+            - containerPort: 80
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  # namespace: game-2048
   name: service-2048
 spec:
   ports:
@@ -46,11 +44,11 @@ metadata:
   # namespace: game-2048
   name: ingress-2048
   annotations:
-    kubernetes.io/ingress.class: alb
+    #kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
 spec:
-  # ingressClassName: alb
+  ingressClassName: alb
   rules:
     - http:
         paths:
@@ -59,5 +57,5 @@ spec:
             backend:
               service:
                 name: service-2048
-                port: 
+                port:
                   number: 80
