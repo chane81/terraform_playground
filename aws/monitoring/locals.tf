@@ -5,17 +5,17 @@ resource "random_string" "suffix" {
 
 locals {
   env = {
-    devtron = {
+    monitoring = {
       region                    = "ap-northeast-2"
-      ip_range_prefix           = "172.31"
+      ip_range_prefix           = "172.20"
       cluster_service_ipv4_cidr = "10.20.0.0/16"
-      subdomain                 = "dev"
+      subdomain                 = "monitoring"
       node_groups = {
-        mos_apps_dev = {
-          name         = "mos-apps-dev"
+        mos_monitoring = {
+          name         = "mos-monitoring"
           min_size     = 2
-          max_size     = 5
-          desired_size = 2
+          max_size     = 10
+          desired_size = 3
 
           # 4cpu 16GB RAM
           # t2.xlarge 0.2304
@@ -28,9 +28,10 @@ locals {
           # r3.large 0.2
 
           instance_types = ["r4.large", "r3.large"]
+          #instance_types = ["t3.medium", "t3.large"]
 
           /** SPOT / ON_DEMAND */
-          capacity_type = "SPOT"
+          capacity_type = "ON_DEMAND"
 
           labels = {
             Environment = local.environment,

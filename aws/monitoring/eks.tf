@@ -49,6 +49,7 @@ module "eks" {
   subnet_ids = module.vpc.private_subnets
 
 
+  # node group 설정 ===========================
   eks_managed_node_group_defaults = {
     disk_size      = 32
     instance_types = ["t3.large"]
@@ -56,6 +57,40 @@ module "eks" {
 
   eks_managed_node_groups = local.env[terraform.workspace].node_groups
 
+  # self_managed_node_group_defaults = {
+  #   instance_type                          = "m6i.large"
+  #   update_launch_template_default_version = true
+  #   iam_role_additional_policies = [
+  #     "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+  #   ]
+  # }
+
+  # self_managed_node_groups = {
+  #   mos-monitoring = {
+  #     name = "mos-monitoring"
+
+  #     min_size      = 2
+  #     max_size      = 5
+  #     desired_size  = 2
+  #     instance_type = "r4.large"
+
+  #     bootstrap_extra_args = "--kubelet-extra-args '--node-labels=node.kubernetes.io/lifecycle=spot'"
+
+  #     block_device_mappings = {
+  #       xvda = {
+  #         device_name = "/dev/xvda"
+  #         ebs = {
+  #           delete_on_termination = false
+  #           encrypted             = false
+  #           volume_size           = 100
+  #           volume_type           = "gp3"
+  #         }
+
+  #       }
+  #     }
+  #   }
+  # }
+  # node group 설정 ===========================
 
   # aws-auth configmap
   manage_aws_auth_configmap = true

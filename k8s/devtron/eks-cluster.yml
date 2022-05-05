@@ -1,0 +1,53 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+metadata:
+  name: dt-prod-cluster
+  region: ap-northeast-2
+vpc:
+  id: "vpc-0d69a827b9697bf86"
+  cidr: "172.31.0.0/16"
+  subnets:
+    private:
+      ap-southeast-1a:
+          id: "subnet-06cc7"
+          cidr: "172.31.112.0/24"
+      ap-southeast-1b:
+          id: "subnet-099e9"
+          cidr: "172.31.111.0/24"
+      ap-southeast-1c:
+          id: "subnet-099e9"
+          cidr: "172.31.111.0/24"
+    public:
+      prod-sg-pub-snet-1a:
+          id: "subnet-02825"
+          cidr: "172.31.32.128/25"
+      prod-sg-pub-snet-1b:
+          id: "subnet-0b065"
+          cidr: "172.31.32.0/25"
+      prod-sg-pub-snet-1c:
+          id: "subnet-0b065"
+          cidr: "172.31.32.0/25"
+nodeGroups:
+  - name: ng-1
+    privateNetworking: true
+    instanceType:
+    desiredCapacity: 1
+    minSize: 1
+    maxSize: 5
+    instancesDistribution:
+      maxPrice: 0.05
+      instanceTypes: ["r4.large", "r3.large"] # At least two instance types should be specified
+      onDemandBaseCapacity: 0
+      onDemandPercentageAboveBaseCapacity: 50
+    iam:
+      withAddonPolicies:
+        autoScaler: true
+      attachPolicyARNs:
+        - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+        - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+    ssh:
+      allow: true
+      publicKey: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDpzpEdCL7RCLjgl8YDndRbIdy2Qp7AMZGcJ2//92rjt6dlfnrafqUEr+lsQwKxrUSUAHXFKM6M5RUSoeV5LIpAP0B7sAzvER9JgsukgQJVtEGFQrkpv7IMobscUIX3NfnwVw5V0ghjhjdskjhkskfgAqinQmt2FaZtZGd+0obA1l7AOOHJG1B/IGm2k81+0xMnwOzs1UyYVnA7v4FQDpnUqE03Eh//cASqfUxfq5zJJBuHBmEsPTc1dtrklnvdj5YKSdQEWF4q6uhZXVIIhvh08WPxa3je5U3n+iie65Mf"
+# Properties:
