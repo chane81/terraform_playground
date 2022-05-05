@@ -31,7 +31,9 @@
 
 #   dynamic "set" {
 #     for_each = {
-#       "controller.admissionWebhooks.enabled" = "false"
+#       "controller.ingressClassResource.name"    = "ingress-nginx"
+#       "controller.ingressClassResource.enabled" = "true"
+#       "controller.ingressClassByName"           = "true"
 #     }
 #     content {
 #       name  = set.key
@@ -41,21 +43,34 @@
 # }
 
 # nginx 에서 제공하는 nginx controller helm
-# resource "helm_release" "nginx-ingress" {
-#   name       = "ingress-nginx"
-#   chart      = "nginx-ingress"
-#   repository = "https://helm.nginx.com/stable"
-#   namespace  = "kube-system"
+resource "helm_release" "nginx-ingress" {
+  name       = "ingress-nginx"
+  chart      = "nginx-ingress"
+  repository = "https://helm.nginx.com/stable"
+  namespace  = "kube-system"
+}
 
-#   # dynamic "set" {
-#   #   for_each = {
-#   #     "controller.image.repository" = "myregistry.example.com/nginx-plus-ingress"
-#   #     "controller.nginxplus"        = "false"
-#   #     # "controller.admissionWebhooks.enabled" = "false"
-#   #   }
-#   #   content {
-#   #     name  = set.key
-#   #     value = set.value
-#   #   }
-#   # }
+
+# ingress 와 route 53 hostname 매핑
+# data "kubernetes_ingress" "ingress" {
+#   metadata {
+#     name = "ingress-2048"
+#   }
 # }
+
+data "aws_route53_zone" "zone" {
+  name         = "mosaicsquare.link."
+  private_zone = false
+}
+
+resource "aws_route53_record" "route53" {
+  depends_on = [
+    resource.kubernetes_ingress_v1.nginx-ingress
+  ]
+
+  zone_id = data.aws_route53_zone.zone.zone_id
+  name    = "*.mosaicsquare.link"
+  type    = "CNAME"
+  ttl     = "300"
+  records = [resource.kubernetes_ingress_v1.nginx-ingress.status.0.load_balancer.0.ingress.0.hostname]
+}

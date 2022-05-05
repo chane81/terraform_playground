@@ -27,8 +27,8 @@ locals {
           # 2cpu 15GB RAM
           # r3.large 0.2
 
-          instance_types = ["r4.large", "r3.large"]
-          #instance_types = ["t3.medium", "t3.large"]
+          # instance_types = ["r4.large", "r3.large"]
+          instance_types = ["t3.medium", "t3.large"]
 
           /** SPOT / ON_DEMAND */
           capacity_type = "ON_DEMAND"
