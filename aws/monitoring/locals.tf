@@ -13,9 +13,10 @@ locals {
       node_groups = {
         mos_monitoring = {
           name         = "mos-monitoring"
-          min_size     = 2
-          max_size     = 10
+
           desired_size = 3
+          min_size     = 2
+          max_size     = 5          
 
           # 4cpu 16GB RAM
           # t2.xlarge 0.2304
@@ -27,15 +28,17 @@ locals {
           # 2cpu 15GB RAM
           # r3.large 0.2
 
-          # instance_types = ["r4.large", "r3.large"]
-          instance_types = ["t3.medium", "t3.large"]
+          # devtron 권고상 적어도 아래 2개 인스턴스 타입을 명시해야함 - At least two instance types should be specified
+          # https://devtron.ai/blog/creating-production-grade-kubernetes-eks-cluster-eksctl/
+          instance_types = ["r4.large", "r3.large"]
+          # instance_types = ["t3.medium", "t3.large"]
 
           /** SPOT / ON_DEMAND */
           capacity_type = "ON_DEMAND"
 
           labels = {
             Environment = local.environment,
-            target      = "application-service"
+            target      = "dev-ops-service"
           }
 
           tags = {
@@ -48,42 +51,14 @@ locals {
             "arn:aws:iam::aws:policy/AmazonS3FullAccess"
           ]
 
+          disk_size = 50
+          disk_type = "gp3"
+
           update_config = {
             max_unavailable_percentage = 50
           }
         }
       }
-    }
-
-    prod = {
-      region                    = "ap-northeast-2" // 서울
-      ip_range_prefix           = "172.22"
-      cluster_service_ipv4_cidr = "10.22.0.0/16"
-      subdomain                 = "prod"
-      # node_groups = {
-      #   apps-c = {
-      #     subnets          = ["subnet-031c41c5412fa4b34"] // az-c
-      #     name_prefix      = "live-0eRNgcbz-apps-c-"
-
-      #     desired_capacity = 3
-      #     max_capacity     = 20
-      #     min_capacity     = 2
-
-      #     instance_types  = ["m6i.2xlarge" /* 0.472 USD */]
-      #     disk_size       = 48
-      #     disk_type       = "gp3"
-      #     disk_throughput = 130
-      #     disk_iops       = 1000
-
-      #     #          create_launch_template = true
-      #     k8s_labels             = {
-      #       Environment = local.environment,
-      #       target = "service.application"
-      #     }
-      #     additional_tags        = { ExtraTag = "application" }
-      #     update_config          = { max_unavailable_percentage = 50 /* or set `max_unavailable` */ }
-      #   }
-      # }
     }
   }
 
@@ -98,10 +73,7 @@ locals {
   ip_range_prefix           = local.env[terraform.workspace].ip_range_prefix
   cluster_service_ipv4_cidr = local.env[terraform.workspace].cluster_service_ipv4_cidr
 
-  subnet-main-id  = module.vpc.private_subnets[2]
-  subnet-alter-id = module.vpc.private_subnets[0]
-
   # alb 컨트롤러 설정 관련
-  lb_controller_iam_role_name        = "mos-role-eks-alb-ctrl"
-  lb_controller_service_account_name = "mos-alb-controller-account"
+  lb_controller_iam_role_name        = "role-${local.name}-lb-controller"
+  lb_controller_service_account_name = "account-${local.name}-lb"
 }

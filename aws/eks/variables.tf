@@ -48,8 +48,23 @@ variable "map_users" {
       groups   = ["system:masters"]
     },
     {
-      userarn  = "arn:aws:iam::292667926659:root"
+      userarn  = "arn:aws:iam::108199670400:root"
       username = "root"
+      groups   = ["system:masters"]
+    },
+    {
+      userarn  = "arn:aws:iam::108199670400:user/eks-user-jayden"
+      username = "eks-user-jayden"
+      groups   = ["system:masters"]
+    },
+    {
+      userarn  = "arn:aws:iam::108199670400:user/eks-user-charles"
+      username = "eks-user-charles"
+      groups   = ["system:masters"]
+    },
+    {
+      userarn  = "arn:aws:iam::108199670400:user/charles"
+      username = "charles"
       groups   = ["system:masters"]
     },
   ]

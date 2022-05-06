@@ -5,10 +5,10 @@ resource "random_string" "suffix" {
 
 locals {
   env = {
-    devtron = {
+    dev = {
       region                    = "ap-northeast-2"
       ip_range_prefix           = "172.31"
-      cluster_service_ipv4_cidr = "10.20.0.0/16"
+      cluster_service_ipv4_cidr = "10.31.0.0/16"
       subdomain                 = "dev"
       node_groups = {
         mos_apps_dev = {
@@ -27,10 +27,10 @@ locals {
           # 2cpu 15GB RAM
           # r3.large 0.2
 
-          instance_types = ["r4.large", "r3.large"]
+          instance_types = ["t3.large"]
 
           /** SPOT / ON_DEMAND */
-          capacity_type = "SPOT"
+          capacity_type = "ON_DEMAND"
 
           labels = {
             Environment = local.environment,
@@ -56,8 +56,8 @@ locals {
 
     prod = {
       region                    = "ap-northeast-2" // 서울
-      ip_range_prefix           = "172.22"
-      cluster_service_ipv4_cidr = "10.22.0.0/16"
+      ip_range_prefix           = "172.41"
+      cluster_service_ipv4_cidr = "10.41.0.0/16"
       subdomain                 = "prod"
       # node_groups = {
       #   apps-c = {
@@ -97,8 +97,8 @@ locals {
   ip_range_prefix           = local.env[terraform.workspace].ip_range_prefix
   cluster_service_ipv4_cidr = local.env[terraform.workspace].cluster_service_ipv4_cidr
 
-  subnet-main-id  = module.vpc.private_subnets[2]
-  subnet-alter-id = module.vpc.private_subnets[0]
+  # subnet-main-id  = module.vpc.private_subnets[2]
+  # subnet-alter-id = module.vpc.private_subnets[0]
 
   # alb 컨트롤러 설정 관련
   lb_controller_iam_role_name        = "mos-role-eks-alb-ctrl"
