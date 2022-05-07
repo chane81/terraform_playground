@@ -14,9 +14,9 @@ locals {
         mos_monitoring = {
           name = "mos-monitoring"
 
-          min_size     = 1
+          min_size     = 2
           max_size     = 5
-          desired_size = 1
+          desired_size = 2
 
           # 2cpu 8GB RAM
           # t3a.large 0.0936
@@ -33,7 +33,7 @@ locals {
 
           # devtron 권고상 적어도 아래 2개 인스턴스 타입을 명시해야함 - At least two instance types should be specified
           # https://devtron.ai/blog/creating-production-grade-kubernetes-eks-cluster-eksctl/
-          instance_types = ["r4.large", "r3.large"]
+          instance_types = ["t3a.xlarge"]
           # instance_types = ["t3.medium", "t3.large"]
 
           /** SPOT / ON_DEMAND */

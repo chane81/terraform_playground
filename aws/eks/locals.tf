@@ -47,6 +47,9 @@ locals {
             "arn:aws:iam::aws:policy/AmazonS3FullAccess"
           ]
 
+          disk_size = 50
+          disk_type = "gp3"
+
           update_config = {
             max_unavailable_percentage = 50
           }
@@ -97,10 +100,7 @@ locals {
   ip_range_prefix           = local.env[terraform.workspace].ip_range_prefix
   cluster_service_ipv4_cidr = local.env[terraform.workspace].cluster_service_ipv4_cidr
 
-  # subnet-main-id  = module.vpc.private_subnets[2]
-  # subnet-alter-id = module.vpc.private_subnets[0]
-
   # alb 컨트롤러 설정 관련
-  lb_controller_iam_role_name        = "mos-role-eks-alb-ctrl"
-  lb_controller_service_account_name = "mos-alb-controller-account"
+  lb_controller_iam_role_name        = "role-${local.name}-${local.environment}-lb-controller"
+  lb_controller_service_account_name = "account-${local.name}-${local.environment}-lb"
 }
