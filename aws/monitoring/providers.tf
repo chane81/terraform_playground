@@ -3,6 +3,8 @@ provider "aws" {
 }
 
 data "aws_availability_zones" "available" {
+  # r4.large, r3.large 등 2b, 2d zone 에서 지원하지 않는 인스턴스가 많아 제외
+  exclude_names = ["ap-northeast-2b", "ap-northeast-2d"]
 }
 
 data "aws_eks_cluster" "cluster" {

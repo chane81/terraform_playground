@@ -12,11 +12,14 @@ locals {
       subdomain                 = "monitoring"
       node_groups = {
         mos_monitoring = {
-          name         = "mos-monitoring"
+          name = "mos-monitoring"
 
-          desired_size = 3
-          min_size     = 2
-          max_size     = 5          
+          min_size     = 1
+          max_size     = 10
+          desired_size = 1
+
+          # 2cpu 8GB RAM
+          # t3a.large 0.0936
 
           # 4cpu 16GB RAM
           # t2.xlarge 0.2304
@@ -74,6 +77,7 @@ locals {
   cluster_service_ipv4_cidr = local.env[terraform.workspace].cluster_service_ipv4_cidr
 
   # alb 컨트롤러 설정 관련
-  lb_controller_iam_role_name        = "role-${local.name}-lb-controller"
-  lb_controller_service_account_name = "account-${local.name}-lb"
+  lb_controller_iam_role_name        = "role-${local.name}-${local.environment}-lb-controller"
+  lb_controller_service_account_name = "account-${local.name}-${local.environment}-lb"
+
 }
