@@ -15,7 +15,7 @@ locals {
           name = "mos-monitoring"
 
           min_size     = 1
-          max_size     = 10
+          max_size     = 5
           desired_size = 1
 
           # 2cpu 8GB RAM
