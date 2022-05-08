@@ -16,16 +16,8 @@ resource "helm_release" "devtron" {
   repository = "https://helm.devtron.ai"
   namespace  = "devtroncd"
 
-  # values = [
-  #   "${file("https://raw.githubusercontent.com/devtron-labs/devtron/main/manifests/devtron-bom.yaml")}"
-  # ]
-
-  # values = [
-  #   "${yamlencode(data.http.devtron_bom.body)}"
-  # ]
-
   values = [
-    "${file("./devtron-bom/devtron-bom.yaml")}"
+    data.http.devtron_bom.body
   ]
 
   dynamic "set" {
