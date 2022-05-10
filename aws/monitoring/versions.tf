@@ -8,10 +8,10 @@ terraform {
     kubernetes = ">= 2.10"
   }
 
-  # backend "s3" {
-  #   bucket         = "mos-infra"
-  #   key            = "aws/eks/terraform.tfstate"
-  #   region         = "ap-northeast-2"
-  #   dynamodb_table = "terraform-lock"
-  # }
+  backend "s3" {
+    bucket         = "mos-terraform-infra"
+    key            = "aws/monitoring/terraform.tfstate"
+    region         = "ap-northeast-2"
+    dynamodb_table = "terraform-lock"
+  }
 }

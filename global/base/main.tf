@@ -2,7 +2,7 @@
 
 # backend 를 위한 s3 bucket, dynamodb 생성
 resource "aws_s3_bucket" "tfstate" {
-  bucket = "mos-infra"
+  bucket = "mos-terraform-infra"
 }
 
 resource "aws_s3_bucket_versioning" "tfstate_versioning" {
