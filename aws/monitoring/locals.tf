@@ -51,7 +51,8 @@ locals {
 
           # s3 access policy attach
           iam_role_additional_policies = [
-            "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+            "arn:aws:iam::aws:policy/AmazonS3FullAccess",
+            "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess"
           ]
 
           disk_size = 50
