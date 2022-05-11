@@ -55,8 +55,21 @@ locals {
             "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess"
           ]
 
-          disk_size = 50
-          disk_type = "gp3"
+          # disk_size = 50
+          # disk_type = "gp3"
+          block_device_mappings = {
+            xvda = {
+              device_name = "/dev/xvda"
+              ebs = {
+                volume_size = 32
+                volume_type = "gp3"
+                iops        = 3000
+                throughput  = 150
+                # encrypted             = true
+                # delete_on_termination = true
+              }
+            }
+          }
 
           update_config = {
             max_unavailable_percentage = 50
