@@ -16,13 +16,14 @@ resource "helm_release" "devtron" {
   repository = "https://helm.devtron.ai"
   namespace  = "devtroncd"
 
-  values = [
-    data.http.devtron_bom.body
-  ]
+  # values = [
+  #   data.http.devtron_bom.body
+  # ]
 
   dynamic "set" {
     for_each = {
       "installer.modules" = "{cicd}"
+      "installer.release" = "v0.4.1"
     }
     content {
       name  = set.key
