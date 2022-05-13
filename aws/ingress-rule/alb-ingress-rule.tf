@@ -1,6 +1,6 @@
 # # 로드밸런서 생성(인그레스 생성에 따른 생성)
 # resource "kubernetes_manifest" "alb_ingress" {
-#   manifest = yamldecode(file("./ingress/${local.environment}.ingress-rule.yml"))
+#   manifest = yamldecode(file("./spec-file/${local.environment}.ingress-rule.yml"))
 
 #   wait_for = {
 #     complete = true

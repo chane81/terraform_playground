@@ -7,14 +7,12 @@ locals {
   env = {
     dev = {
       region                    = "ap-northeast-2"
-      subdomain                 = "dev"
       cluster_name              = ""
       vpc_name = ""
     }
 
     prod = {
       region                    = "ap-northeast-2" // 서울
-      subdomain                 = "prod"
       cluster_name              = ""
       vpc_name = ""
     }

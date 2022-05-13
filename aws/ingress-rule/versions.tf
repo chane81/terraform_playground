@@ -14,7 +14,7 @@ terraform {
 
   backend "s3" {
     bucket         = "mos-terraform-infra"
-    key            = "aws/eks/terraform.tfstate"
+    key            = "aws/ingress/terraform.tfstate"
     region         = "ap-northeast-2"
     dynamodb_table = "terraform-lock"
   }
