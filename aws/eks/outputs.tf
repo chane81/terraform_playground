@@ -69,4 +69,3 @@ output "node_groups" {
   description = "eks-managed node-groups"
   value       = module.eks.eks_managed_node_groups
 }
-

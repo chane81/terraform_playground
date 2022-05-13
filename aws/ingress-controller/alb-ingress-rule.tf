@@ -1,4 +1,4 @@
-resource "kubernetes_ingress_v1" "nginx-ingress" {
+resource "kubernetes_ingress_v1" "alb_ingress" {
   metadata {
     name = "kube-ingress"
     annotations = {
