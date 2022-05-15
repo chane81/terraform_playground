@@ -62,5 +62,7 @@
   terraform plan
   terraform apply
   terraform graph -draw-cycles
+
+  # terraform 수행시 특정 이유로 lock이 걸린 상태에서 해제가 안된채로 끝나 있을 경우 사용
   terraform force-unlock [LOCK_ID]
   ```
