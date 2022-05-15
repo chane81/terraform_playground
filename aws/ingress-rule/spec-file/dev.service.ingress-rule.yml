@@ -1,0 +1,66 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: dev
+  name: service-ingress
+  annotations:
+    #kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    # 그룹명을 주어 해당그룹의 로드벨런스에 인그레스를 묶이게 한다.
+    alb.ingress.kubernetes.io/group.name: 'mosaic-square'
+    # alb.ingress.kubernetes.io/actions.service-2048: >
+    #   {"Type":"redirect","RedirectConfig":{"Path":"/","Port":"80","Protocol":"HTTP","statusCode":"HTTP_302"}}
+spec:
+  ingressClassName: alb
+  rules:
+    - host: 'www.dev.mosaicsquare.io'
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: mosaic-square-web
+                port:
+                  number: 80
+    - host: 'admin.dev.mosaicsquare.io'
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: mosaic-square-admin-web
+                port:
+                  number: 80
+    - host: 'service.dev.mosaicsquare.io'
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: mosaic-square-service
+                port:
+                  number: 80
+    - host: 'notification.dev.mosaicsquare.io'
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: mosaic-square-notification
+                port:
+                  number: 80
+    - host: 'blockchain.dev.mosaicsquare.io'
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: mosaic-square-blockchain
+                port:
+                  number: 80
