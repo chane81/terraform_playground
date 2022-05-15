@@ -4,7 +4,6 @@ metadata:
   namespace: dev
   name: mosaic-square-ingress
   annotations:
-    #kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
     # alb.ingress.kubernetes.io/actions.service-2048: >
@@ -31,7 +30,7 @@ spec:
               service:
                 name: mosaic-square-admin-web
                 port:
-                  number: 3000
+                  number: 80
     - host: 'service.dev.mosaicsquare.io'
       http:
         paths:
@@ -41,7 +40,7 @@ spec:
               service:
                 name: mosaic-square-service
                 port:
-                  number: 8080
+                  number: 80
     - host: 'notification.dev.mosaicsquare.io'
       http:
         paths:
@@ -51,7 +50,7 @@ spec:
               service:
                 name: mosaic-square-notification
                 port:
-                  number: 8080
+                  number: 80
     - host: 'blockchain.dev.mosaicsquare.io'
       http:
         paths:
@@ -61,4 +60,4 @@ spec:
               service:
                 name: mosaic-square-blockchain
                 port:
-                  number: 8080
+                  number: 80
