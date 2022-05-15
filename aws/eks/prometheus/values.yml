@@ -1,0 +1,45 @@
+grafana:
+  enabled: true
+  adminPassword: moscotkqu!@#$  
+prometheus:
+  prometheusSpec:
+    ## 데이터유지 기간 - 3개월
+    retention: 90d
+
+    ## Maximum size of metrics
+    ##
+    retentionSize: '200GB'
+
+    ## Number of replicas of each shard to deploy for a Prometheus deployment.
+    ## Number of replicas multiplied by shards is the total number of Pods created.
+    ##
+    replicas: 1
+
+    ## Log level for Prometheus be configured in
+    ##
+    logLevel: info
+
+    ## Log format for Prometheus be configured in
+    ##
+    logFormat: logfmt
+
+    ## Prometheus StorageSpec for persistent data
+    ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/user-guides/storage.md
+    ##
+    storageSpec:
+      ## Using PersistentVolumeClaim
+      ##
+      volumeClaimTemplate:
+        spec:
+          # storageClassName: awsElasticBlockStore
+          storageClassName: gp2
+          accessModes: ['ReadWriteOnce']
+          resources:
+            requests:
+              storage: 200Gi
+
+    # Additional volumes on the output StatefulSet definition.
+    volumes: []
+
+    # Additional VolumeMounts on the output StatefulSet definition.
+    volumeMounts: []
