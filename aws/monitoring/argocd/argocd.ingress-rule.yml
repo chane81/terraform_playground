@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: argocd
+  name: argocd-ingress
+  annotations:
+    #kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/backend-protocol: HTTP
+    # 그룹명을 주어 해당그룹의 로드벨런스에 인그레스를 묶이게 한다.
+    # alb.ingress.kubernetes.io/group.name: 'mosaic-square-monitoring'
+    # alb.ingress.kubernetes.io/actions.service-2048: >
+    #   {"Type":"redirect","RedirectConfig":{"Path":"/","Port":"80","Protocol":"HTTP","statusCode":"HTTP_302"}}
+spec:
+  ingressClassName: alb
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: argocd-external-service
+                port:
+                  number: 443

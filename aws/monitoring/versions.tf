@@ -6,6 +6,7 @@ terraform {
     local      = ">= 1.4"
     random     = ">= 2.1"
     kubernetes = ">= 2.10"
+    helm       = ">= 2.1.1"
   }
 
   backend "s3" {
