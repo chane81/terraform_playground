@@ -15,52 +15,6 @@ resource "helm_release" "argocd" {
   ]
 }
 
-# 그라파나 external 서비스
-# resource "kubernetes_service" "argocd_external_service" {
-#   metadata {
-#     name      = "argocd-external-service"
-#     namespace = "argocd"
-#     labels = {
-#       "app.kubernetes.io/component" = "server"
-#       "app.kubernetes.io/instance" = "argo"
-#       "app.kubernetes.io/managed-by" = "Helm"
-#       "app.kubernetes.io/name" = "argocd-server"
-#       "app.kubernetes.io/part-of" = "argocd"
-#       "helm.sh/chart" = "argo-cd-4.6.0"
-#     }
-#     annotations = {
-#       "meta.helm.sh/release-name": "argo"
-#       "meta.helm.sh/release-namespace": "argocd"
-#     }
-#   }
-#   spec {
-#     selector = {
-#       "app.kubernetes.io/instance" = "argo"
-#       "app.kubernetes.io/name"     = "argocd-server"
-#     }
-
-#     port {
-#       name = "http"
-#       port        = 80
-#       target_port = "server"
-#       protocol    = "TCP"
-#     }
-
-#     port {
-#       name = "https"
-#       port = 443
-#       target_port = "server"
-#       protocol = "TCP"
-#     }
-
-#     type = "NodePort"
-#   }
-
-#   depends_on = [
-#     helm_release.argocd
-#   ]
-# }
-
 # resource "kubernetes_service" "argocd_grpc_service" {
 #   metadata {
 #     name      = "argogrpc"
@@ -93,18 +47,9 @@ resource "helm_release" "argocd" {
 #   ]
 # }
 
-# # 서비스 인그레스 생성
+# Ingress 생성
 resource "kubernetes_manifest" "argocd_ingress" {
-  manifest = yamldecode(file("./argocd/argocd.ingress-rule.yml"))
-
-  # lagacy 코드
-  # wait_for = {
-  #   complete = true
-
-  #   fields = {
-  #     "status.loadBalancer.ingress[0].hostname" = "*"
-  #   }
-  # }
+  manifest = yamldecode(file("./argocd/ingress.yml"))
 
   wait {
     fields = {
@@ -114,7 +59,6 @@ resource "kubernetes_manifest" "argocd_ingress" {
 
   # depends_on = [
   #   helm_release.argocd
-  #   # kubernetes_service.argocd_grpc_service
   # ]
 }
 
@@ -139,7 +83,28 @@ resource "aws_route53_record" "route53" {
   name    = "argocd.mosaicsquare.io"
   type    = "CNAME"
   ttl     = "300"
+
   records = [
     data.kubernetes_ingress_v1.argocd_ingress.status.0.load_balancer.0.ingress.0.hostname,
+  ]
+}
+
+# ArgoCD Rollout 설치
+# 참고: https://argoproj.github.io/argo-rollouts/
+resource "helm_release" "argo-rollouts" {
+  name = "argocd-rollouts"
+
+  repository = "https://argoproj.github.io/argo-helm"
+  chart      = "argo-rollouts"
+  version    = "2.14.0"
+  namespace  = "argocd"
+
+  set {
+    name  = "dashboard.enabled"
+    value = true
+  }
+
+  depends_on = [
+    helm_release.argocd
   ]
 }

@@ -4,9 +4,9 @@ resource "kubernetes_namespace" "devtroncd_namespace" {
   }
 }
 
-data "http" "devtron_bom" {
-  url = "https://raw.githubusercontent.com/devtron-labs/devtron/main/manifests/devtron-bom.yaml"
-}
+# data "http" "devtron_bom" {
+#   url = "https://raw.githubusercontent.com/devtron-labs/devtron/main/manifests/devtron-bom.yaml"
+# }
 
 
 # devtron 설치
@@ -23,7 +23,7 @@ resource "helm_release" "devtron" {
   dynamic "set" {
     for_each = {
       "installer.modules" = "{cicd}"
-      "installer.release" = "v0.4.1"
+      "installer.release" = "v0.4.3"
     }
     content {
       name  = set.key

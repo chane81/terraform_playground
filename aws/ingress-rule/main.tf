@@ -57,7 +57,7 @@ resource "kubernetes_manifest" "prometheus_ingress" {
 data "kubernetes_ingress_v1" "service_ingress" {
   metadata {
     name      = "service-ingress"
-    namespace = local.environment
+    namespace = "default"
   }
 
   depends_on = [
