@@ -7,8 +7,8 @@ locals {
   env = {
     monitoring = {
       region                    = "ap-northeast-2"
-      ip_range_prefix           = "172.20"
-      cluster_service_ipv4_cidr = "10.20.0.0/16"
+      ip_range_prefix           = "10.40"
+      cluster_service_ipv4_cidr = "10.45.0.0/16"
       subdomain                 = "monitoring"
       node_groups = {
         mos_monitoring = {
@@ -33,7 +33,7 @@ locals {
 
           # devtron 권고상 적어도 아래 2개 인스턴스 타입을 명시해야함 - At least two instance types should be specified
           # https://devtron.ai/blog/creating-production-grade-kubernetes-eks-cluster-eksctl/
-          instance_types = ["t3a.xlarge"]
+          instance_types = ["t3.large"]
           # instance_types = ["t3.medium", "t3.large"]
 
           /** SPOT / ON_DEMAND */

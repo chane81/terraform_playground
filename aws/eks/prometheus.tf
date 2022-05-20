@@ -1,3 +1,9 @@
+resource "kubernetes_namespace" "prometheus_namespace" {
+  metadata {
+    name = "prometheus"
+  }
+}
+
 resource "helm_release" "prometheus" {
   name = "prometheus"
 
@@ -8,6 +14,10 @@ resource "helm_release" "prometheus" {
 
   values = [
     "${file("./prometheus/values.yml")}"
+  ]
+
+  depends_on = [
+    kubernetes_namespace.prometheus_namespace
   ]
 }
 

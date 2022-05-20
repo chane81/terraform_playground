@@ -1,3 +1,9 @@
+resource "kubernetes_namespace" "argocd_namespace" {
+  metadata {
+    name = "argocd"
+  }
+}
+
 resource "helm_release" "argocd" {
   name = "argo"
 
@@ -11,7 +17,8 @@ resource "helm_release" "argocd" {
   ]
 
   depends_on = [
-    module.eks
+    module.eks,
+    kubernetes_namespace.argocd_namespace
   ]
 }
 
@@ -57,9 +64,10 @@ resource "kubernetes_manifest" "argocd_ingress" {
     }
   }
 
-  # depends_on = [
-  #   helm_release.argocd
-  # ]
+  depends_on = [
+    module.eks,
+    helm_release.argocd
+  ]
 }
 
 data "kubernetes_ingress_v1" "argocd_ingress" {

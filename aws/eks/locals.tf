@@ -7,8 +7,8 @@ locals {
   env = {
     dev = {
       region                    = "ap-northeast-2"
-      ip_range_prefix           = "172.31"
-      cluster_service_ipv4_cidr = "10.31.0.0/16"
+      ip_range_prefix           = "10.10"
+      cluster_service_ipv4_cidr = "10.15.0.0/16"
       subdomain                 = "dev"
       node_groups = {
         mos_apps_dev = {
@@ -73,8 +73,8 @@ locals {
 
     prod = {
       region                    = "ap-northeast-2" // 서울
-      ip_range_prefix           = "172.41"
-      cluster_service_ipv4_cidr = "10.41.0.0/16"
+      ip_range_prefix           = "10.20"
+      cluster_service_ipv4_cidr = "10.25.0.0/16"
       subdomain                 = "prod"
       # node_groups = {
       #   apps-c = {
@@ -118,3 +118,4 @@ locals {
   lb_controller_iam_role_name        = "role-${local.name}-${local.environment}-lb-controller"
   lb_controller_service_account_name = "account-${local.name}-${local.environment}-lb"
 }
+
